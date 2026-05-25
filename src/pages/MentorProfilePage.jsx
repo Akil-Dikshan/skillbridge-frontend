@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getMentorProfile } from '@/api/userApi';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, Clock, Star, MapPin, Calendar, Award } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowLeft, Clock, Star, MapPin, Award } from 'lucide-react';
+import BookingModal from '@/components/booking/BookingModal';
 
 const MentorProfilePage = () => {
   const { id } = useParams();
@@ -80,10 +80,11 @@ const MentorProfilePage = () => {
                 <div className="flex items-center justify-center gap-2 text-emerald-400 font-bold text-xl">
                   ${mentor.hourlyRate}<span className="text-sm font-normal text-slate-500">/hr</span>
                 </div>
-                <Button className="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-lg h-12 shadow-lg shadow-emerald-500/20">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  Book Session
-                </Button>
+                <BookingModal 
+                  mentorId={id} 
+                  mentorName={mentor.name} 
+                  hourlyRate={mentor.hourlyRate} 
+                />
               </CardContent>
             </Card>
 

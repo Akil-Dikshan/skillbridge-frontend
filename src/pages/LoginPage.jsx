@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '@/api/authApi';
+import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,6 +14,7 @@ const LoginPage = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { loginContext } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,9 +22,14 @@ const LoginPage = () => {
     setError(null);
     try {
       const data = await login(email, password);
-      localStorage.setItem('token', data.accessToken);
-      // We will handle AuthContext dispatch later
-      navigate('/dashboard');
+      // loginContext stores the token and updates the user state globally
+      loginContext(data.accessToken, { role: data.role, email: data.email, userId: data.userId });
+      
+      if (data.role === 'STUDENT') {
+        navigate('/dashboard');
+      } else {
+        navigate('/mentor-dashboard');
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to login');
     } finally {

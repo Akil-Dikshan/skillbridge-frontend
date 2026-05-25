@@ -3,6 +3,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MentorListPage from './pages/MentorListPage';
 import MentorProfilePage from './pages/MentorProfilePage';
+import StudentDashboardPage from './pages/StudentDashboardPage';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/mentors" element={<MentorListPage />} />
             <Route path="/mentors/:id" element={<MentorProfilePage />} />
+            <Route path="/dashboard" element={<StudentDashboardPage />} />
             <Route path="/" element={<Navigate to="/login" replace />} />
             {/* We will add more routes later */}
           </Routes>

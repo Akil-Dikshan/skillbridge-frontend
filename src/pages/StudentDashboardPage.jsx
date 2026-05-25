@@ -6,7 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, MapPin, Video, CheckCircle, XCircle, Search } from 'lucide-react';
+import { Calendar, Clock, MapPin, Video, CheckCircle, XCircle, Search, Star } from 'lucide-react';
+import ReviewModal from '@/components/booking/ReviewModal';
 
 const StudentDashboardPage = () => {
   const { user, logoutContext } = useAuth();
@@ -186,9 +187,12 @@ const StudentDashboardPage = () => {
                           </div>
                         </div>
                         {booking.status === 'COMPLETED' && (
-                          <Button variant="outline" className="border-emerald-500/50 text-emerald-400 hover:bg-emerald-500/10">
-                            <Star className="mr-2 h-4 w-4" /> Leave Review
-                          </Button>
+                          <ReviewModal 
+                            bookingId={booking.id}
+                            mentorId={booking.mentorId}
+                            mentorName={`Mentor #${booking.mentorId}`}
+                            onSuccess={() => alert('Review submitted successfully!')}
+                          />
                         )}
                       </CardContent>
                     </Card>

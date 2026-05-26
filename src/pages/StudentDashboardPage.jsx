@@ -16,9 +16,9 @@ const StudentDashboardPage = () => {
   const [error, setError] = useState(null);
 
   const fetchBookings = async () => {
-    setIsLoading(true);
     try {
-      const data = await getStudentBookings(user.userId);
+      setIsLoading(true);
+      const data = await getStudentBookings();
       setBookings(data);
     } catch (err) {
       setError('Failed to load your bookings.');

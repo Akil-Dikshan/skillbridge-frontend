@@ -14,9 +14,9 @@ const MentorDashboardPage = () => {
   const [error, setError] = useState(null);
 
   const fetchBookings = async () => {
-    setIsLoading(true);
     try {
-      const data = await getMentorBookings(user.userId);
+      setIsLoading(true);
+      const data = await getMentorBookings();
       setBookings(data);
     } catch (err) {
       setError('Failed to load your bookings.');

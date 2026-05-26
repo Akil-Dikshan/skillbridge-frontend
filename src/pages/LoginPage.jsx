@@ -23,7 +23,7 @@ const LoginPage = () => {
     try {
       const data = await login(email, password);
       // loginContext stores the token and updates the user state globally
-      loginContext(data.accessToken, { role: data.role, email: data.email, userId: data.userId });
+      loginContext(data.accessToken);
       
       if (data.role === 'STUDENT') {
         navigate('/dashboard');

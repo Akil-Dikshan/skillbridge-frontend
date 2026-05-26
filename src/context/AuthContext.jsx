@@ -40,9 +40,12 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  const loginContext = (token, userData) => {
+  const loginContext = (token) => {
     localStorage.setItem('token', token);
-    setUser(userData);
+    const payload = decodeJwt(token);
+    if (payload) {
+      setUser({ userId: payload.userId, email: payload.sub, roleType: payload.role });
+    }
   };
 
   const logoutContext = () => {

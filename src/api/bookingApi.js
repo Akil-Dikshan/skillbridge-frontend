@@ -5,32 +5,32 @@ export const createBooking = async (bookingData) => {
   return response.data;
 };
 
-export const getStudentBookings = async (studentId) => {
-  const response = await apiClient.get(`/api/bookings/student/${studentId}`);
+export const getStudentBookings = async () => {
+  const response = await apiClient.get('/api/bookings/student');
   return response.data;
 };
 
-export const getMentorBookings = async (mentorId) => {
-  const response = await apiClient.get(`/api/bookings/mentor/${mentorId}`);
+export const getMentorBookings = async () => {
+  const response = await apiClient.get('/api/bookings/mentor');
   return response.data;
 };
 
 export const acceptBooking = async (bookingId) => {
-  const response = await apiClient.put(`/api/bookings/${bookingId}/accept`);
+  const response = await apiClient.patch(`/api/bookings/${bookingId}/status?status=CONFIRMED`);
   return response.data;
 };
 
 export const rejectBooking = async (bookingId) => {
-  const response = await apiClient.put(`/api/bookings/${bookingId}/reject`);
+  const response = await apiClient.patch(`/api/bookings/${bookingId}/status?status=CANCELLED`);
   return response.data;
 };
 
 export const cancelBooking = async (bookingId, reason) => {
-  const response = await apiClient.put(`/api/bookings/${bookingId}/cancel`, { reason });
+  const response = await apiClient.patch(`/api/bookings/${bookingId}/status?status=CANCELLED`);
   return response.data;
 };
 
 export const completeSession = async (bookingId) => {
-  const response = await apiClient.put(`/api/bookings/${bookingId}/complete`);
+  const response = await apiClient.patch(`/api/bookings/${bookingId}/status?status=COMPLETED`);
   return response.data;
 };

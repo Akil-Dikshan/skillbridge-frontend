@@ -1,7 +1,7 @@
 import apiClient from './axios';
 
 export const getMentors = async (skill = '') => {
-  const url = skill ? `/api/users/mentors?skill=${encodeURIComponent(skill)}` : '/api/users/mentors';
+  const url = skill ? `/api/mentors/search?skill=${encodeURIComponent(skill)}` : '/api/mentors/search?skill=';
   const response = await apiClient.get(url);
   return response.data;
 };

@@ -10,7 +10,3 @@ export const register = async (email, password, role) => {
   return response.data;
 };
 
-export const validateToken = async () => {
-  const response = await apiClient.get('/api/auth/validate');
-  return response.data;
-};

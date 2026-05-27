@@ -1,38 +1,51 @@
 import { createContext, useState, useEffect } from 'react';
-import { validateToken } from '@/api/authApi';
 
 export const AuthContext = createContext(null);
+
+const decodeJwt = (token) => {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    return null;
+  }
+};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const checkAuth = () => {
       const token = localStorage.getItem('token');
       if (!token) {
         setIsLoading(false);
         return;
       }
       
-      try {
-        const userData = await validateToken();
-        setUser(userData);
-      } catch (error) {
-        console.error('Token validation failed', error);
+      const payload = decodeJwt(token);
+      if (!payload || payload.exp * 1000 < Date.now()) {
         localStorage.removeItem('token');
         setUser(null);
-      } finally {
-        setIsLoading(false);
+      } else {
+        setUser({ userId: payload.userId, email: payload.sub, roleType: payload.role });
       }
+      setIsLoading(false);
     };
 
     checkAuth();
   }, []);
 
-  const loginContext = (token, userData) => {
+  const loginContext = (token) => {
     localStorage.setItem('token', token);
-    setUser(userData);
+    const payload = decodeJwt(token);
+    if (payload) {
+      setUser({ userId: payload.userId, email: payload.sub, roleType: payload.role });
+    }
   };
 
   const logoutContext = () => {

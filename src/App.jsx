@@ -6,6 +6,16 @@ import MentorProfilePage from './pages/MentorProfilePage';
 import StudentDashboardPage from './pages/StudentDashboardPage';
 import MentorDashboardPage from './pages/MentorDashboardPage';
 import { AuthProvider } from './context/AuthContext';
+import { useAuth } from './hooks/useAuth';
+
+// Redirects unauthenticated users to /login.
+// Shows nothing while auth state is still loading to prevent flash of redirect.
+function ProtectedRoute({ children }) {
+  const { user, isLoading } = useAuth();
+  if (isLoading) return null;
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
+}
 
 function App() {
   return (
@@ -15,12 +25,11 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/mentors" element={<MentorListPage />} />
-            <Route path="/mentors/:id" element={<MentorProfilePage />} />
-            <Route path="/dashboard" element={<StudentDashboardPage />} />
-            <Route path="/mentor-dashboard" element={<MentorDashboardPage />} />
+            <Route path="/mentors" element={<ProtectedRoute><MentorListPage /></ProtectedRoute>} />
+            <Route path="/mentors/:id" element={<ProtectedRoute><MentorProfilePage /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<ProtectedRoute><StudentDashboardPage /></ProtectedRoute>} />
+            <Route path="/mentor-dashboard" element={<ProtectedRoute><MentorDashboardPage /></ProtectedRoute>} />
             <Route path="/" element={<Navigate to="/login" replace />} />
-            {/* We will add more routes later */}
           </Routes>
         </div>
       </Router>

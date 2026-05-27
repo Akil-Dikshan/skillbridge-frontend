@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { register } from '@/api/authApi';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ArrowRight, ArrowLeft, Zap, GraduationCap, BriefcaseBusiness, CheckCircle2 } from 'lucide-react';
+
+const sg = { fontFamily: "'Space Grotesk', sans-serif" };
+
+const PERKS = [
+  { title: 'Expert mentors', desc: 'Verified industry professionals across 20+ fields.' },
+  { title: 'Flexible scheduling', desc: 'Book sessions that fit your calendar, any time zone.' },
+  { title: 'Real progress', desc: 'Track your growth with structured session outcomes.' },
+];
 
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
@@ -21,106 +28,232 @@ const RegisterPage = () => {
     setError(null);
     try {
       await register(email, password, role);
-      // After registration, redirect to login
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to register');
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex h-screen w-full items-center justify-center bg-slate-950 p-4">
-      <Card className="w-full max-w-md bg-slate-900 text-slate-50 border-slate-800 shadow-xl shadow-purple-500/5">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-bold tracking-tight text-purple-400">Join SkillBridge</CardTitle>
-          <CardDescription className="text-slate-400">
-            Create an account to start your journey
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleRegister} className="space-y-4">
+    <div className="flex h-screen w-full overflow-hidden bg-white">
+
+      {/* ── Left panel ── */}
+      <div className="hidden lg:flex lg:w-[52%] flex-col justify-between bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 p-14 relative overflow-hidden select-none">
+
+        {/* Blobs */}
+        <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-white/5" />
+        <div className="absolute -bottom-40 -left-20 w-[28rem] h-[28rem] rounded-full bg-indigo-900/40" />
+        <div className="absolute top-1/2 right-0 w-64 h-64 rounded-full bg-violet-500/20 -translate-y-1/2 translate-x-1/2" />
+
+        {/* Logo */}
+        <div className="relative flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg">
+            <Zap className="w-5 h-5 text-violet-600" />
+          </div>
+          <span style={sg} className="text-white font-bold text-xl tracking-tight">SkillBridge</span>
+        </div>
+
+        {/* Hero */}
+        <div className="relative space-y-7">
+          <div>
+            {/* Eyebrow */}
+            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-violet-300 mb-4">
+              Join the Community
+            </p>
+
+            <h1 style={{ ...sg, fontSize: '52px', lineHeight: '1.08', fontWeight: 700, color: 'white' }}>
+              Join a community<br />
+              <span style={{
+                background: 'linear-gradient(120deg, #C4B5FD 0%, #F0ABFC 55%, #FCA5A5 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>
+                built for growth.
+              </span>
+            </h1>
+
+            <p className="mt-4 text-violet-200/80 text-base leading-relaxed max-w-[320px] font-light">
+              Whether you're seeking guidance or ready to mentor — SkillBridge is where careers are built.
+            </p>
+          </div>
+
+          {/* Perks */}
+          <div className="space-y-4">
+            {PERKS.map(({ title, desc }) => (
+              <div key={title} className="flex items-start gap-4">
+                <div className="mt-0.5 flex-shrink-0">
+                  <CheckCircle2 className="w-5 h-5" style={{ color: '#C4B5FD' }} />
+                </div>
+                <div>
+                  <p style={sg} className="text-white font-semibold text-sm">{title}</p>
+                  <p className="text-violet-300/70 text-xs leading-snug mt-0.5">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom trust row */}
+        <div className="relative border-t border-white/10 pt-6">
+          <p className="text-xs font-semibold tracking-[0.15em] uppercase text-violet-300/60 mb-3">
+            Why SkillBridge?
+          </p>
+          <div className="flex flex-col gap-1.5">
+            {[
+              'One-on-one sessions with real industry professionals',
+              'Built for Sri Lankan students & tech careers',
+              'Free to join — no hidden fees, ever',
+            ].map((line) => (
+              <p key={line} className="text-violet-200/60 text-xs leading-snug flex items-start gap-2">
+                <span className="text-violet-400 mt-0.5">→</span>
+                {line}
+              </p>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Right panel ── */}
+      <div className="flex-1 flex items-center justify-center p-8 bg-white">
+        <div className="w-full max-w-[400px] animate-in fade-in slide-in-from-bottom-4 duration-500">
+
+          {/* Back to login */}
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-violet-600 transition-colors group mb-8"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform duration-200" />
+            Back to login
+          </Link>
+
+          {/* Mobile logo */}
+          <div className="flex items-center gap-2 mb-6 lg:hidden">
+            <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center">
+              <Zap className="w-4 h-4 text-white" />
+            </div>
+            <span style={sg} className="font-bold text-gray-900 text-lg">SkillBridge</span>
+          </div>
+
+          {/* Heading */}
+          <div className="mb-7">
+            <p className="text-xs font-semibold tracking-[0.18em] uppercase text-violet-500 mb-2">
+              Get started
+            </p>
+            <h2 style={{ ...sg, fontSize: '30px', lineHeight: '1.15', fontWeight: 700, color: '#111827' }}>
+              Create your{' '}
+              <span style={{
+                background: 'linear-gradient(135deg, #7C3AED 0%, #9333EA 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>account</span>
+            </h2>
+            <p className="text-gray-400 mt-1.5 text-sm">Free forever. No credit card required.</p>
+          </div>
+
+          <form onSubmit={handleRegister} className="space-y-5">
+
+            {/* Role selector */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-200">Email</Label>
+              <Label className="text-xs font-semibold tracking-widest uppercase text-gray-500">
+                I want to join as
+              </Label>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { value: 'STUDENT', icon: GraduationCap, label: 'Student', desc: 'Find mentors & book sessions' },
+                  { value: 'MENTOR', icon: BriefcaseBusiness, label: 'Mentor', desc: 'Share your expertise' },
+                ].map(({ value, icon: Icon, label, desc }) => {
+                  const selected = role === value;
+                  return (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => setRole(value)}
+                      className="flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer text-center"
+                      style={{
+                        borderColor: selected ? '#7C3AED' : '#E5E7EB',
+                        backgroundColor: selected ? 'rgba(124,58,237,0.05)' : '#F9FAFB',
+                      }}
+                    >
+                      <Icon className="w-5 h-5" style={{ color: selected ? '#7C3AED' : '#9CA3AF' }} />
+                      <span className="text-sm font-semibold" style={{ ...sg, color: selected ? '#6D28D9' : '#374151' }}>
+                        {label}
+                      </span>
+                      <span className="text-xs leading-tight text-gray-400">{desc}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="email"
+                className="text-xs font-semibold tracking-widest uppercase text-gray-500">
+                Email address
+              </Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="you@example.com"
                 required
-                className="bg-slate-950 border-slate-800 text-slate-100 placeholder:text-slate-600 focus-visible:ring-purple-500"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="h-11 rounded-xl bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus-visible:ring-violet-500 focus-visible:border-violet-400 transition-colors"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-200">Password</Label>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="password"
+                className="text-xs font-semibold tracking-widest uppercase text-gray-500">
+                Password
+              </Label>
               <Input
                 id="password"
                 type="password"
+                placeholder="••••••••"
                 required
-                className="bg-slate-950 border-slate-800 text-slate-100 focus-visible:ring-purple-500"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="h-11 rounded-xl bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus-visible:ring-violet-500 focus-visible:border-violet-400 transition-colors"
               />
             </div>
-            <div className="space-y-2">
-              <Label className="text-slate-200">I want to join as a:</Label>
-              <div className="flex gap-4 mt-2">
-                <label className="flex items-center gap-2 text-sm cursor-pointer">
-                  <input
-                    type="radio"
-                    name="role"
-                    value="STUDENT"
-                    checked={role === 'STUDENT'}
-                    onChange={() => setRole('STUDENT')}
-                    className="text-purple-500 bg-slate-950 border-slate-800 focus:ring-purple-500"
-                  />
-                  Student
-                </label>
-                <label className="flex items-center gap-2 text-sm cursor-pointer">
-                  <input
-                    type="radio"
-                    name="role"
-                    value="MENTOR"
-                    checked={role === 'MENTOR'}
-                    onChange={() => setRole('MENTOR')}
-                    className="text-purple-500 bg-slate-950 border-slate-800 focus:ring-purple-500"
-                  />
-                  Mentor
-                </label>
-              </div>
-            </div>
+
             {error && (
-              <div className="text-sm font-medium text-red-500 bg-red-500/10 p-3 rounded-md border border-red-500/20">
+              <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl p-3">
                 {error}
               </div>
             )}
-            <Button 
-              type="submit" 
-              className="w-full bg-purple-500 hover:bg-purple-600 text-slate-950 font-semibold"
+
+            <Button
+              type="submit"
               disabled={isLoading}
+              className="w-full h-11 text-white font-semibold rounded-xl transition-all duration-200 group mt-1 border-0 shadow-lg shadow-violet-200"
+              style={{ background: 'linear-gradient(135deg, #7C3AED 0%, #9333EA 100%)' }}
             >
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Please wait
+                  Creating account...
                 </>
               ) : (
-                'Create Account'
+                <>
+                  Create account
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+                </>
               )}
             </Button>
+
+            <p className="text-center text-gray-400 text-xs pt-1">
+              By creating an account you agree to our{' '}
+              <span className="underline cursor-pointer hover:text-gray-600 transition-colors">Terms of Service</span>
+            </p>
           </form>
-        </CardContent>
-        <CardFooter className="flex flex-col text-center">
-          <div className="text-sm text-slate-400 mt-2">
-            Already have an account?{' '}
-            <Link to="/login" className="text-purple-400 hover:text-purple-300 hover:underline">
-              Sign in
-            </Link>
-          </div>
-        </CardFooter>
-      </Card>
+
+        </div>
+      </div>
     </div>
   );
 };

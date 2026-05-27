@@ -5,6 +5,7 @@ import MentorListPage from './pages/MentorListPage';
 import MentorProfilePage from './pages/MentorProfilePage';
 import StudentDashboardPage from './pages/StudentDashboardPage';
 import MentorDashboardPage from './pages/MentorDashboardPage';
+import AppLayout from './components/layout/AppLayout';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './hooks/useAuth';
 
@@ -14,14 +15,14 @@ function ProtectedRoute({ children }) {
   const { user, isLoading } = useAuth();
   if (isLoading) return null;
   if (!user) return <Navigate to="/login" replace />;
-  return children;
+  return <AppLayout>{children}</AppLayout>;
 }
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-slate-950 text-slate-50 font-sans">
+        <div className="min-h-screen font-sans">
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />

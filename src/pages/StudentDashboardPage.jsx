@@ -44,20 +44,19 @@ const StudentDashboardPage = () => {
     }
   };
 
-  const upcomingBookings = bookings.filter(b => b.status === 'PENDING' || b.status === 'ACCEPTED');
-  const pastBookings = bookings.filter(b => b.status === 'COMPLETED' || b.status === 'REJECTED' || b.status === 'CANCELLED');
+  const upcomingBookings = bookings.filter(b => b.status === 'PENDING' || b.status === 'CONFIRMED');
+  const pastBookings = bookings.filter(b => b.status === 'COMPLETED' || b.status === 'CANCELLED');
 
   const getStatusBadge = (status) => {
     switch (status) {
       case 'PENDING':
         return <Badge variant="outline" className="text-yellow-500 border-yellow-500/50 bg-yellow-500/10">Pending</Badge>;
-      case 'ACCEPTED':
-        return <Badge variant="outline" className="text-emerald-500 border-emerald-500/50 bg-emerald-500/10">Accepted</Badge>;
+      case 'CONFIRMED':
+        return <Badge variant="outline" className="text-emerald-500 border-emerald-500/50 bg-emerald-500/10">Confirmed</Badge>;
       case 'COMPLETED':
         return <Badge variant="outline" className="text-blue-500 border-blue-500/50 bg-blue-500/10">Completed</Badge>;
-      case 'REJECTED':
       case 'CANCELLED':
-        return <Badge variant="outline" className="text-red-500 border-red-500/50 bg-red-500/10">{status === 'REJECTED' ? 'Rejected' : 'Cancelled'}</Badge>;
+        return <Badge variant="outline" className="text-red-500 border-red-500/50 bg-red-500/10">Cancelled</Badge>;
       default:
         return <Badge>{status}</Badge>;
     }
@@ -133,13 +132,13 @@ const StudentDashboardPage = () => {
                       <CardContent className="py-4 space-y-4 flex-1">
                         <div className="flex items-center gap-3 text-slate-300">
                           <div className="bg-slate-800 p-2 rounded-md"><Calendar className="h-4 w-4 text-emerald-400" /></div>
-                          <span>{new Date(booking.bookingDate).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                          <span>{new Date(booking.bookingDate + 'T00:00:00').toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</span>
                         </div>
                         <div className="flex items-center gap-3 text-slate-300">
                           <div className="bg-slate-800 p-2 rounded-md"><Clock className="h-4 w-4 text-emerald-400" /></div>
                           <span>{booking.startTime} ({booking.durationMinutes} mins)</span>
                         </div>
-                        {booking.status === 'ACCEPTED' && (
+                        {booking.status === 'CONFIRMED' && (
                           <div className="flex items-center gap-3 text-slate-300">
                             <div className="bg-slate-800 p-2 rounded-md"><Video className="h-4 w-4 text-blue-400" /></div>
                             <span className="text-sm">Link will be provided via email</span>
@@ -182,7 +181,7 @@ const StudentDashboardPage = () => {
                             {getStatusBadge(booking.status)}
                           </div>
                           <div className="flex flex-wrap gap-4 text-sm text-slate-400">
-                            <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {new Date(booking.bookingDate).toLocaleDateString()}</span>
+                            <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {new Date(booking.bookingDate + 'T00:00:00').toLocaleDateString()}</span>
                             <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {booking.durationMinutes} mins</span>
                           </div>
                         </div>

@@ -63,20 +63,19 @@ const MentorDashboardPage = () => {
   };
 
   const pendingRequests = bookings.filter(b => b.status === 'PENDING');
-  const acceptedSessions = bookings.filter(b => b.status === 'ACCEPTED');
-  const pastSessions = bookings.filter(b => b.status === 'COMPLETED' || b.status === 'REJECTED' || b.status === 'CANCELLED');
+  const confirmedSessions = bookings.filter(b => b.status === 'CONFIRMED');
+  const pastSessions = bookings.filter(b => b.status === 'COMPLETED' || b.status === 'CANCELLED');
 
   const getStatusBadge = (status) => {
     switch (status) {
       case 'PENDING':
         return <Badge variant="outline" className="text-yellow-500 border-yellow-500/50 bg-yellow-500/10">Action Required</Badge>;
-      case 'ACCEPTED':
+      case 'CONFIRMED':
         return <Badge variant="outline" className="text-emerald-500 border-emerald-500/50 bg-emerald-500/10">Upcoming</Badge>;
       case 'COMPLETED':
         return <Badge variant="outline" className="text-blue-500 border-blue-500/50 bg-blue-500/10">Completed</Badge>;
-      case 'REJECTED':
       case 'CANCELLED':
-        return <Badge variant="outline" className="text-red-500 border-red-500/50 bg-red-500/10">{status === 'REJECTED' ? 'Declined' : 'Cancelled'}</Badge>;
+        return <Badge variant="outline" className="text-red-500 border-red-500/50 bg-red-500/10">Cancelled</Badge>;
       default:
         return <Badge>{status}</Badge>;
     }
@@ -115,7 +114,7 @@ const MentorDashboardPage = () => {
                 Requests {pendingRequests.length > 0 && <span className="ml-2 bg-emerald-500 text-slate-950 px-2 py-0.5 rounded-full text-xs font-bold">{pendingRequests.length}</span>}
               </TabsTrigger>
               <TabsTrigger value="upcoming" className="data-[state=active]:bg-slate-800 data-[state=active]:text-emerald-400">
-                Upcoming ({acceptedSessions.length})
+                Upcoming ({confirmedSessions.length})
               </TabsTrigger>
               <TabsTrigger value="history" className="data-[state=active]:bg-slate-800 data-[state=active]:text-emerald-400">
                 History ({pastSessions.length})
@@ -144,7 +143,7 @@ const MentorDashboardPage = () => {
                       <CardContent className="py-4 space-y-4 flex-1">
                         <div className="flex items-center gap-3 text-slate-300">
                           <div className="bg-slate-800 p-2 rounded-md"><Calendar className="h-4 w-4 text-emerald-400" /></div>
-                          <span>{new Date(booking.bookingDate).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                          <span>{new Date(booking.bookingDate + 'T00:00:00').toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</span>
                         </div>
                         <div className="flex items-center gap-3 text-slate-300">
                           <div className="bg-slate-800 p-2 rounded-md"><Clock className="h-4 w-4 text-emerald-400" /></div>
@@ -178,13 +177,13 @@ const MentorDashboardPage = () => {
             </TabsContent>
             
             <TabsContent value="upcoming" className="mt-6">
-              {acceptedSessions.length === 0 ? (
+              {confirmedSessions.length === 0 ? (
                 <div className="text-center py-20 text-slate-400 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed">
                   You have no upcoming sessions.
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {acceptedSessions.map((booking) => (
+                  {confirmedSessions.map((booking) => (
                     <Card key={booking.id} className="bg-slate-900 border-emerald-500/30 flex flex-col shadow-lg shadow-emerald-500/5">
                       <CardHeader className="pb-4 border-b border-slate-800/50">
                         <div className="flex justify-between items-start">
@@ -199,7 +198,7 @@ const MentorDashboardPage = () => {
                       <CardContent className="py-4 space-y-4 flex-1">
                         <div className="flex items-center gap-3 text-slate-300">
                           <div className="bg-slate-800 p-2 rounded-md"><Calendar className="h-4 w-4 text-emerald-400" /></div>
-                          <span>{new Date(booking.bookingDate).toLocaleDateString()}</span>
+                          <span>{new Date(booking.bookingDate + 'T00:00:00').toLocaleDateString()}</span>
                         </div>
                         <div className="flex items-center gap-3 text-slate-300">
                           <div className="bg-slate-800 p-2 rounded-md"><Clock className="h-4 w-4 text-emerald-400" /></div>
@@ -236,7 +235,7 @@ const MentorDashboardPage = () => {
                             {getStatusBadge(booking.status)}
                           </div>
                           <div className="flex flex-wrap gap-4 text-sm text-slate-400">
-                            <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {new Date(booking.bookingDate).toLocaleDateString()}</span>
+                            <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {new Date(booking.bookingDate + 'T00:00:00').toLocaleDateString()}</span>
                             <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {booking.durationMinutes} mins</span>
                           </div>
                         </div>

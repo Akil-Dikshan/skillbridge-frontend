@@ -16,12 +16,12 @@ export const getMentorBookings = async () => {
 };
 
 export const acceptBooking = async (bookingId) => {
-  const response = await apiClient.patch(`/api/bookings/${bookingId}/status?status=ACCEPTED`);
+  const response = await apiClient.patch(`/api/bookings/${bookingId}/status?status=CONFIRMED`);
   return response.data;
 };
 
 export const rejectBooking = async (bookingId) => {
-  const response = await apiClient.patch(`/api/bookings/${bookingId}/status?status=REJECTED`);
+  const response = await apiClient.patch(`/api/bookings/${bookingId}/status?status=CANCELLED`);
   return response.data;
 };
 

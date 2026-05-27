@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const apiGatewayUrl = 'https://api-gateway-wxe8.onrender.com';
+// In development: '' so requests go through the Vite proxy (no CORS).
+// In production: the full Render URL via the env variable.
+const apiGatewayUrl = import.meta.env.VITE_API_URL ?? '';
 
 const apiClient = axios.create({
   baseURL: apiGatewayUrl,

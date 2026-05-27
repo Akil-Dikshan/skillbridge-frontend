@@ -11,4 +11,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://api-gateway-wxe8.onrender.com',
+        changeOrigin: true,
+        secure: true,
+      },
+    },
+  },
 })

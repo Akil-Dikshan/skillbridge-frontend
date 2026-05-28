@@ -1,19 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { Zap, Search, Menu, X, ChevronDown, LogOut } from 'lucide-react';
+import { Zap, Search, Menu, X, ChevronDown, LogOut, ChevronRight } from 'lucide-react';
 
 const sg = { fontFamily: "'Space Grotesk', sans-serif" };
 
 const CATEGORIES = [
-  'Software Engineering',
-  'Data Science',
-  'DevOps & Cloud',
-  'Product Management',
-  'UI/UX Design',
-  'AI & Machine Learning',
-  'Cybersecurity',
-  'Career Guidance',
+  { label: 'Engineering Mentors', keyword: 'Engineering' },
+  { label: 'Data Mentors',        keyword: 'Data' },
+  { label: 'DevOps Mentors',      keyword: 'DevOps' },
+  { label: 'Design Mentors',      keyword: 'Design' },
+  { label: 'AI Mentors',          keyword: 'Machine Learning' },
+  { label: 'Product Managers',    keyword: 'Product' },
+  { label: 'Security Mentors',    keyword: 'Security' },
+  { label: 'Career Coaches',      keyword: 'Career' },
 ];
 
 const Navbar = () => {
@@ -34,7 +34,6 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [navigate]);
@@ -45,8 +44,8 @@ const Navbar = () => {
     setMobileOpen(false);
   };
 
-  const handleCategory = (cat) => {
-    navigate(`/mentors?skill=${encodeURIComponent(cat)}`);
+  const handleCategory = (keyword) => {
+    navigate(`/mentors?skill=${encodeURIComponent(keyword)}`);
     setMobileOpen(false);
   };
 
@@ -62,33 +61,33 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
 
       {/* ── Row 1 ── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-3 h-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
+        <div className="flex items-center gap-6 h-20">
 
           {/* Logo */}
           <Link
             to={isMentor ? '/mentor-dashboard' : '/dashboard'}
-            className="flex items-center gap-2.5 flex-shrink-0"
+            className="flex items-center gap-3 flex-shrink-0"
           >
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center shadow-sm">
-              <Zap className="w-4 h-4 text-white" />
+            <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm">
+              <Zap className="w-5 h-5 text-white" />
             </div>
-            <span style={sg} className="font-bold text-gray-900 text-lg hidden sm:block tracking-tight">
+            <span style={sg} className="font-bold text-gray-900 text-xl hidden sm:block tracking-tight">
               SkillBridge
             </span>
           </Link>
 
           {/* Search bar — desktop, students only */}
           {!isMentor && (
-            <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-4">
+            <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-lg mx-8">
               <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                 <input
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search by skill or mentor name"
-                  className="w-full pl-9 pr-4 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-400 transition-colors"
+                  className="w-full h-12 pl-11 pr-4 text-base bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-400 transition-colors"
                 />
               </div>
             </form>
@@ -98,18 +97,18 @@ const Navbar = () => {
           <div className="flex-1" />
 
           {/* Desktop nav links */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-8">
             {!isMentor ? (
               <Link
                 to="/mentors"
-                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                className="px-5 py-2.5 text-base font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
               >
                 Browse Mentors
               </Link>
             ) : (
               <Link
                 to="/mentor-dashboard"
-                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                className="px-5 py-2.5 text-base font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
               >
                 Dashboard
               </Link>
@@ -120,18 +119,18 @@ const Navbar = () => {
           <div className="hidden md:block relative" ref={userMenuRef}>
             <button
               onClick={() => setUserMenuOpen((v) => !v)}
-              className="flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2.5 pl-1.5 pr-3 py-1.5 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
             >
               <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
+                className="w-9 h-9 rounded-lg flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
                 style={{ background: 'linear-gradient(135deg, #4F46E5, #7C3AED)' }}
               >
                 {initials}
               </div>
-              <span className="text-sm text-gray-700 font-medium max-w-[130px] truncate">
+              <span className="text-sm text-gray-700 font-medium max-w-[140px] truncate">
                 {user?.email}
               </span>
-              <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {userMenuOpen && (
@@ -168,25 +167,32 @@ const Navbar = () => {
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Toggle menu"
           >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
-      {/* ── Row 2 — category pills (students, desktop + mobile scroll) ── */}
+      {/* ── Row 2 — category nav (students only) ── */}
       {!isMentor && (
-        <div className="border-t border-gray-50 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex gap-0.5 overflow-x-auto py-2" style={{ scrollbarWidth: 'none' }}>
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => handleCategory(cat)}
-                  className="flex-shrink-0 px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors whitespace-nowrap"
-                >
-                  {cat}
-                </button>
-              ))}
+        <div className="border-t border-gray-100 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
+            <div className="relative flex items-center">
+              <nav className="flex items-center overflow-x-auto py-1 pr-10" style={{ scrollbarWidth: 'none', gap: '0.25rem' }}>
+                {CATEGORIES.map((cat) => (
+                  <button
+                    key={cat.keyword}
+                    onClick={() => handleCategory(cat.keyword)}
+                    className="flex-shrink-0 px-4 py-3 text-base font-semibold text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors whitespace-nowrap"
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </nav>
+              {/* Fade + arrow indicating more items */}
+              <div className="absolute right-0 top-0 h-full flex items-center pointer-events-none"
+                style={{ background: 'linear-gradient(to right, transparent, white 60%)' , width: '4rem' }}>
+                <ChevronRight className="w-5 h-5 text-gray-400 ml-auto mr-1" />
+              </div>
             </div>
           </div>
         </div>
@@ -195,28 +201,28 @@ const Navbar = () => {
       {/* ── Mobile menu ── */}
       {mobileOpen && (
         <div className="md:hidden border-t border-gray-100 bg-white">
-          <div className="px-4 py-4 space-y-2">
+          <div className="px-4 py-5 space-y-2">
 
             {/* Mobile search */}
             {!isMentor && (
-              <form onSubmit={handleSearch} className="mb-3">
+              <form onSubmit={handleSearch} className="mb-4">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                   <input
                     type="text"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="Search by skill or mentor name"
-                    className="w-full pl-9 pr-4 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
+                    className="w-full h-12 pl-11 pr-4 text-base bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
                   />
                 </div>
               </form>
             )}
 
             {/* Mobile user info */}
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl mb-2">
+            <div className="flex items-center gap-3 p-3.5 bg-gray-50 rounded-xl mb-2">
               <div
-                className="w-9 h-9 rounded-lg flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
+                className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
                 style={{ background: 'linear-gradient(135deg, #4F46E5, #7C3AED)' }}
               >
                 {initials}
@@ -232,7 +238,7 @@ const Navbar = () => {
               <Link
                 to="/mentors"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
+                className="flex items-center px-3 py-3 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
               >
                 Browse Mentors
               </Link>
@@ -241,7 +247,7 @@ const Navbar = () => {
               <Link
                 to="/mentor-dashboard"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
+                className="flex items-center px-3 py-3 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
               >
                 Dashboard
               </Link>
@@ -250,9 +256,9 @@ const Navbar = () => {
             {/* Sign out */}
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors mt-1"
+              className="w-full flex items-center gap-2.5 px-3 py-3 text-base font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors mt-1"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-5 h-5" />
               Sign out
             </button>
           </div>

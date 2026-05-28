@@ -60,11 +60,10 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
 
-      {/* ── Row 1 ── */}
+      {/* Row 1 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
         <div className="flex items-center gap-6 h-20">
 
-          {/* Logo */}
           <Link
             to={isMentor ? '/mentor-dashboard' : '/dashboard'}
             className="flex items-center gap-3 flex-shrink-0"
@@ -77,7 +76,6 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Search bar — desktop, students only */}
           {!isMentor && (
             <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-lg mx-8">
               <div className="relative w-full">
@@ -93,10 +91,8 @@ const Navbar = () => {
             </form>
           )}
 
-          {/* Spacer */}
           <div className="flex-1" />
 
-          {/* Desktop nav links */}
           <nav className="hidden md:flex items-center gap-8">
             {!isMentor ? (
               <Link
@@ -115,7 +111,6 @@ const Navbar = () => {
             )}
           </nav>
 
-          {/* User dropdown — desktop */}
           <div className="hidden md:block relative" ref={userMenuRef}>
             <button
               onClick={() => setUserMenuOpen((v) => !v)}
@@ -136,9 +131,7 @@ const Navbar = () => {
             {userMenuOpen && (
               <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
                 <div className="px-4 py-3 border-b border-gray-50">
-                  <p className="text-xs font-semibold tracking-widest uppercase text-gray-400">
-                    Signed in as
-                  </p>
+                  <p className="text-xs font-semibold tracking-widest uppercase text-gray-400">Signed in as</p>
                   <p className="text-sm text-gray-800 font-medium truncate mt-0.5">{user?.email}</p>
                   <span
                     className="inline-block mt-1.5 text-xs font-semibold px-2 py-0.5 rounded-full"
@@ -161,7 +154,6 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Hamburger — mobile */}
           <button
             className="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-50 transition-colors"
             onClick={() => setMobileOpen((v) => !v)}
@@ -172,7 +164,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* ── Row 2 — category nav (students only) ── */}
+      {/* Row 2 — category nav (students only) */}
       {!isMentor && (
         <div className="border-t border-gray-100 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
@@ -188,9 +180,8 @@ const Navbar = () => {
                   </button>
                 ))}
               </nav>
-              {/* Fade + arrow indicating more items */}
               <div className="absolute right-0 top-0 h-full flex items-center pointer-events-none"
-                style={{ background: 'linear-gradient(to right, transparent, white 60%)' , width: '4rem' }}>
+                style={{ background: 'linear-gradient(to right, transparent, white 60%)', width: '4rem' }}>
                 <ChevronRight className="w-5 h-5 text-gray-400 ml-auto mr-1" />
               </div>
             </div>
@@ -198,12 +189,10 @@ const Navbar = () => {
         </div>
       )}
 
-      {/* ── Mobile menu ── */}
+      {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden border-t border-gray-100 bg-white">
           <div className="px-4 py-5 space-y-2">
-
-            {/* Mobile search */}
             {!isMentor && (
               <form onSubmit={handleSearch} className="mb-4">
                 <div className="relative">
@@ -218,8 +207,6 @@ const Navbar = () => {
                 </div>
               </form>
             )}
-
-            {/* Mobile user info */}
             <div className="flex items-center gap-3 p-3.5 bg-gray-50 rounded-xl mb-2">
               <div
                 className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
@@ -232,8 +219,6 @@ const Navbar = () => {
                 <p className="text-xs text-gray-400 mt-0.5">{isMentor ? 'Mentor' : 'Student'}</p>
               </div>
             </div>
-
-            {/* Nav links */}
             {!isMentor && (
               <Link
                 to="/mentors"
@@ -252,8 +237,6 @@ const Navbar = () => {
                 Dashboard
               </Link>
             )}
-
-            {/* Sign out */}
             <button
               onClick={handleLogout}
               className="w-full flex items-center gap-2.5 px-3 py-3 text-base font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors mt-1"

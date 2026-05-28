@@ -111,6 +111,11 @@
   --radius-sm: calc(var(--radius) - 4px);
 }
 
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
 @layer base {
   * {
     border-color: var(--border);
@@ -120,5 +125,8 @@
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
+  }
+  button, [role="button"], a, label[for], select, summary, [tabindex]:not([tabindex="-1"]) {
+    cursor: pointer;
   }
 }

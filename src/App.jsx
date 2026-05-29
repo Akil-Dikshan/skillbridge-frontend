@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Lenis from 'lenis';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -13,11 +13,17 @@ import AppLayout from './components/layout/AppLayout';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './hooks/useAuth';
 
+// Public route with navbar — accessible without login.
+function PublicRoute({ children }) {
+  return <AppLayout>{children}</AppLayout>;
+}
+
 // Standard protected route — wraps content in AppLayout (navbar + bg).
 function ProtectedRoute({ children }) {
   const { user, isLoading } = useAuth();
+  const location = useLocation();
   if (isLoading) return null;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/login" state={{ from: location }} replace />;
   return <AppLayout>{children}</AppLayout>;
 }
 
@@ -57,8 +63,8 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/mentors" element={<ProtectedRoute><MentorListPage /></ProtectedRoute>} />
-            <Route path="/mentors/:id" element={<ProtectedRoute><MentorProfilePage /></ProtectedRoute>} />
+            <Route path="/mentors" element={<PublicRoute><MentorListPage /></PublicRoute>} />
+            <Route path="/mentors/:id" element={<PublicRoute><MentorProfilePage /></PublicRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><StudentDashboardPage /></ProtectedRoute>} />
             <Route path="/mentor-dashboard" element={<ProtectedRoute><MentorDashboardPage /></ProtectedRoute>} />
             <Route path="/mentor/onboarding" element={<ProtectedPage><MentorOnboardingPage /></ProtectedPage>} />

@@ -209,9 +209,13 @@ const MentorProfilePage = () => {
               className="w-36 sm:w-44 flex-shrink-0 rounded-2xl overflow-hidden shadow-2xl"
               style={{ background: 'linear-gradient(160deg, #4F46E5 0%, #7C3AED 50%, #0D3B2A 100%)', aspectRatio: '3/4' }}
             >
-              <div className="w-full h-full flex items-center justify-center">
-                <span style={{ ...sg, fontSize: '3.5rem' }} className="text-white font-bold">{initials}</span>
-              </div>
+              {profile?.profilePictureUrl ? (
+                <img src={profile.profilePictureUrl} alt={name} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <span style={{ ...sg, fontSize: '3.5rem' }} className="text-white font-bold">{initials}</span>
+                </div>
+              )}
             </div>
 
             {/* Identity */}

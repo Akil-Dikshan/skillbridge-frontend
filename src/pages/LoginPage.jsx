@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { login } from '@/api/authApi';
 import { useAuth } from '@/hooks/useAuth';
 import { Input } from '@/components/ui/input';
@@ -46,6 +46,7 @@ const LoginPage = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { loginContext } = useAuth();
 
   const handleLogin = async (e) => {
@@ -56,7 +57,8 @@ const LoginPage = () => {
       const data = await login(email, password);
       loginContext(data.accessToken);
       if (data.role === 'STUDENT') {
-        navigate('/dashboard');
+        const from = location.state?.from?.pathname || '/mentors';
+        navigate(from, { replace: true });
       } else {
         navigate('/mentor-dashboard');
       }

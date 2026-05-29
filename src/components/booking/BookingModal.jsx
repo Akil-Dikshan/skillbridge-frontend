@@ -25,7 +25,7 @@ const BookingModal = ({ mentorId, mentorName, hourlyRate }) => {
   const handleBooking = async (e) => {
     e.preventDefault();
     if (!user) {
-      navigate('/login');
+      navigate('/login', { state: { from: window.location } });
       return;
     }
     

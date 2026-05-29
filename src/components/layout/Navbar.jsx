@@ -95,12 +95,22 @@ const Navbar = () => {
 
           <nav className="hidden md:flex items-center gap-8">
             {!isMentor ? (
-              <Link
-                to="/mentors"
-                className="px-5 py-2.5 text-base font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
-              >
-                Browse Mentors
-              </Link>
+              <>
+                <Link
+                  to="/mentors"
+                  className="px-5 py-2.5 text-base font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
+                >
+                  Browse Mentors
+                </Link>
+                {user && (
+                  <Link
+                    to="/dashboard"
+                    className="px-5 py-2.5 text-base font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
+                  >
+                    My Dashboard
+                  </Link>
+                )}
+              </>
             ) : (
               <Link
                 to="/mentor-dashboard"
@@ -220,13 +230,22 @@ const Navbar = () => {
               </div>
             </div>
             {!isMentor && (
-              <Link
-                to="/mentors"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center px-3 py-3 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
-              >
-                Browse Mentors
-              </Link>
+              <>
+                <Link
+                  to="/mentors"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center px-3 py-3 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
+                >
+                  Browse Mentors
+                </Link>
+                <Link
+                  to="/dashboard"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center px-3 py-3 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
+                >
+                  My Dashboard
+                </Link>
+              </>
             )}
             {isMentor && (
               <Link

@@ -56,18 +56,16 @@ const BookingModal = ({ mentorId, mentorName, hourlyRate }) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-lg h-12 shadow-lg shadow-emerald-500/20">
-          <Calendar className="mr-2 h-5 w-5" />
-          Book Session
-        </Button>
+      <DialogTrigger className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-lg h-12 shadow-lg shadow-emerald-500/20 transition-colors">
+        <Calendar className="h-5 w-5" />
+        Book Session
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-slate-900 text-slate-50 border-slate-800">
         <DialogHeader>
           <DialogTitle className="text-2xl text-emerald-400">Book Session</DialogTitle>
           <DialogDescription className="text-slate-400">
             Request a 1-on-1 session with {mentorName || 'this mentor'}. 
-            Rate: <span className="font-bold text-emerald-400">${hourlyRate}/hr</span>
+            Rate: <span className="font-bold text-emerald-400">LKR {hourlyRate}/hr</span>
           </DialogDescription>
         </DialogHeader>
 
@@ -119,10 +117,10 @@ const BookingModal = ({ mentorId, mentorName, hourlyRate }) => {
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
               >
-                <option value="30">30 Minutes (${(hourlyRate * 0.5).toFixed(2)})</option>
-                <option value="60">60 Minutes (${hourlyRate})</option>
-                <option value="90">90 Minutes (${(hourlyRate * 1.5).toFixed(2)})</option>
-                <option value="120">120 Minutes (${(hourlyRate * 2).toFixed(2)})</option>
+                <option value="30">30 Minutes (LKR {(hourlyRate * 0.5).toFixed(0)})</option>
+                <option value="60">60 Minutes (LKR {hourlyRate})</option>
+                <option value="90">90 Minutes (LKR {(hourlyRate * 1.5).toFixed(0)})</option>
+                <option value="120">120 Minutes (LKR {(hourlyRate * 2).toFixed(0)})</option>
               </select>
             </div>
 

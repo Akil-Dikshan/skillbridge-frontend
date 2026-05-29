@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { register } from '@/api/authApi';
+import { useAuth } from '@/hooks/useAuth';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -21,14 +22,20 @@ const RegisterPage = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { loginContext } = useAuth();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
     try {
-      await register(email, password, role);
-      navigate('/login');
+      const data = await register(email, password, role);
+      loginContext(data.accessToken);
+      if (role === 'MENTOR') {
+        navigate('/mentor/onboarding');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
